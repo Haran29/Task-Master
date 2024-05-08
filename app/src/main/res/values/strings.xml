@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Task Master</string>
     <string name="applogo">applogo</string>
+    <string name="AddBtn" />
+    <string name="addbtn">Add Task\n</string>
+    <string name="TaskList">Task List</string>
+    <string name="delete_button">delete</string>
 </resources>
