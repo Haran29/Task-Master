@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmaster.R
-import model.TaskEntity
+import database.TaskEntity
 import viewholder.TaskViewHolder
 
 class TaskAdapter(private val tasks: List<TaskEntity>) : RecyclerView.Adapter<TaskViewHolder>() {
