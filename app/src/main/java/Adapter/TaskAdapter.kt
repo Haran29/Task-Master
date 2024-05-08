@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmaster.R
-import database.TaskEntity
+import database.Task
 import viewholder.TaskViewHolder
 
-class TaskAdapter(private val tasks: List<TaskEntity>) : RecyclerView.Adapter<TaskViewHolder>() {
+class TaskAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TaskViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_task_layout, parent, false)
