@@ -2,15 +2,21 @@ package database
 
 import androidx.lifecycle.LiveData
 
-class TaskRepository(private val db: TaskDatabase) {
+class TaskRepository(private val taskDao: TaskDao) {
 
-    suspend fun insertTask(task: Task) = db.getTaskDao().insertTask(task)
-    suspend fun deleteTask(task: Task) = db.getTaskDao().deleteTask(task)
+    suspend fun insertTask(task: Task) {
+        taskDao.insertTask(task)
+    }
 
-    suspend fun updateTask(task: Task) = db.getTaskDao().updateTask(task)
+    suspend fun updateTask(task: Task) {
+        taskDao.updateTask(task)
+    }
 
-    suspend fun getAllTask(task: Task) = db.getTaskDao().getAllTasks()
+    suspend fun deleteTask(task: Task) {
+        taskDao.deleteTask(task)
+    }
 
-
-
+    fun getAllTasks(): LiveData<List<Task>> {
+        return taskDao.getAllTasks()
+    }
 }
