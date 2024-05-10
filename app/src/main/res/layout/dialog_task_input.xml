@@ -26,11 +26,6 @@
         android:hint="Task Priority (optional)"
         android:inputType="number" />
 
-    <EditText
-        android:id="@+id/taskDeadlineInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Task Deadline (optional)"
-        android:inputType="number" />
+
 
 </LinearLayout>

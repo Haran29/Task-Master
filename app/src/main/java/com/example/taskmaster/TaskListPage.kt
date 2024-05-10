@@ -16,6 +16,7 @@ import database.TaskRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TaskListPage : AppCompatActivity() {
 
@@ -56,12 +57,15 @@ class TaskListPage : AppCompatActivity() {
         // Refresh data from the repository
         CoroutineScope(Dispatchers.IO).launch {
             val data = repository.getAllTasks()
-            // Update LiveData in ViewModel
-            viewModel.setData(data)
+            withContext(Dispatchers.Main) {
+                viewModel.setData(data)
+            }
         }
+
+
     }
 
-    private fun displayDialog(repository: TaskRepository) {
+   private fun displayDialog(repository: TaskRepository) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Enter New Task item:")
         val view = layoutInflater.inflate(R.layout.dialog_task_input, null)
@@ -70,17 +74,20 @@ class TaskListPage : AppCompatActivity() {
         val taskNameInput = view.findViewById<EditText>(R.id.taskNameInput)
         val taskDescriptionInput = view.findViewById<EditText>(R.id.taskDescriptionInput)
         val taskPriorityInput = view.findViewById<EditText>(R.id.taskPriorityInput)
-        val taskDeadlineInput = view.findViewById<EditText>(R.id.taskDeadlineInput)
+
 
         builder.setPositiveButton("OK") { dialog, which ->
             val name = taskNameInput.text.toString()
             val description = taskDescriptionInput.text.toString()
             val priority = taskPriorityInput.text.toString().toIntOrNull()
-            val deadline = taskDeadlineInput.text.toString().toLongOrNull()
 
-            if (name.isNotBlank() && priority != null && deadline != null) {
+
+            if (name.isNotBlank() && priority != null) {
                 CoroutineScope(Dispatchers.IO).launch {
                     repository.insertTask(Task(name, description, priority))
+                    withContext(Dispatchers.Main) {
+                        refreshData()
+                    }
                 }
             }
         }
