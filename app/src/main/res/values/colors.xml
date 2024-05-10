@@ -6,4 +6,6 @@
     <color name="textPrimary">#333333</color>
     <color name="textSecondary">#999999</color>
     <color name="colorAccent">#2196F3</color>
+    <color name="borderColor">#FF0000</color>
+
 </resources>

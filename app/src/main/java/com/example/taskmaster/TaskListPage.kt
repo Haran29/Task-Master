@@ -4,6 +4,7 @@ import Adapter.TaskAdapter
 import TaskPageDataViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -25,9 +26,8 @@ class TaskListPage : AppCompatActivity() {
     private lateinit var adapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        print(1)
+
         super.onCreate(savedInstanceState)
-        print(2)
         setContentView(R.layout.activity_task_list_page)
 
         val taskDao = TaskDatabase.getInstance(this).taskDao()
@@ -54,20 +54,21 @@ class TaskListPage : AppCompatActivity() {
     }
 
     private fun refreshData() {
-        // Refresh data from the repository
         CoroutineScope(Dispatchers.IO).launch {
-            val data = repository.getAllTasks()
-            withContext(Dispatchers.Main) {
-                viewModel.setData(data)
+            try {
+                val data = repository.getAllTasks()
+                withContext(Dispatchers.Main) {
+                    viewModel.setData(data)
+                }
+            } catch (e: Exception) {
+                Log.e("TaskListPage", "Failed to fetch tasks", e)
             }
         }
-
-
     }
 
-   private fun displayDialog(repository: TaskRepository) {
+
+    private fun displayDialog(repository: TaskRepository) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Enter New Task item:")
         val view = layoutInflater.inflate(R.layout.dialog_task_input, null)
         builder.setView(view)
 
@@ -75,28 +76,38 @@ class TaskListPage : AppCompatActivity() {
         val taskDescriptionInput = view.findViewById<EditText>(R.id.taskDescriptionInput)
         val taskPriorityInput = view.findViewById<EditText>(R.id.taskPriorityInput)
 
+        val alertDialog = builder.create()
 
-        builder.setPositiveButton("OK") { dialog, which ->
+        // Handle OK button click
+        view.findViewById<Button>(R.id.okButton).setOnClickListener {
             val name = taskNameInput.text.toString()
             val description = taskDescriptionInput.text.toString()
-            val priority = taskPriorityInput.text.toString().toIntOrNull()
-
+            val priority = try {
+                taskPriorityInput.text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                e.printStackTrace()
+                null
+            }
 
             if (name.isNotBlank() && priority != null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    repository.insertTask(Task(name, description, priority))
-                    withContext(Dispatchers.Main) {
-                        refreshData()
+                    try {
+                        repository.insertTask(Task(name, description, priority))
+                        alertDialog.dismiss()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }
         }
 
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.cancel()
+        // Handle Close button click
+        view.findViewById<Button>(R.id.closeButton).setOnClickListener {
+            alertDialog.dismiss()
         }
 
-        val alertDialog = builder.create()
         alertDialog.show()
     }
+
+
 }

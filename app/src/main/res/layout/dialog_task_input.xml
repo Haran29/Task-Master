@@ -3,29 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/white"
     android:padding="20dp">
+
+    <TextView
+        android:id="@+id/enterNewTaskText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter New Task"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"/>
 
     <EditText
         android:id="@+id/taskNameInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Task Name"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textColor="@color/textPrimary"
+        android:layout_marginBottom="20dp"/>
 
     <EditText
         android:id="@+id/taskDescriptionInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Task Description"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textColor="@color/textPrimary"
+        android:layout_marginBottom="20dp"/>
 
     <EditText
         android:id="@+id/taskPriorityInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Task Priority (optional)"
-        android:inputType="number" />
+        android:inputType="number"
+        android:background="@drawable/edit_text_background"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textColor="@color/textPrimary"
+        android:layout_marginBottom="20dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_background_blue"
+            android:backgroundTint="#ACD7E5"
+            android:text="OK"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_background_blue"
+            android:backgroundTint="#ACD7E5"
+            android:text="Close"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>

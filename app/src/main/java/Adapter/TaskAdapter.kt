@@ -3,6 +3,7 @@ package Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmaster.R
@@ -20,7 +21,7 @@ class TaskAdapter(
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.name)
         private val priorityTextView: TextView = itemView.findViewById(R.id.priority)
-        private val deleteButton: TextView = itemView.findViewById(R.id.delete_button)
+        private val deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
 
         fun bind(task: Task) {
             nameTextView.text = task.name
