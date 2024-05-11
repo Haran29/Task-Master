@@ -9,7 +9,6 @@ class TaskPageDataViewModel : ViewModel() {
     val data: LiveData<List<Task>> = _data
 
     fun setData(data: LiveData<List<Task>>) {
-        // You can directly observe the LiveData to get the list of tasks
         data.observeForever { taskList ->
             _data.value = taskList
         }

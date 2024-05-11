@@ -10,14 +10,15 @@ import database.Task
 
 class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val ivDelete: ImageView = itemView.findViewById(R.id.delete_button)
-    val checkBox:CheckBox = itemView.findViewById(R.id.checkbox)
+    private val checkBox:CheckBox = itemView.findViewById(R.id.checkbox)
     val name: TextView = itemView.findViewById(R.id.name)
-    private val deadline: TextView = itemView.findViewById(R.id.description)
-    private val priority: TextView = itemView.findViewById(R.id.priority)
+    private val description: TextView = itemView.findViewById(R.id.description)
+
 
     fun bind(task: Task) {
         name.text = task.name
-        deadline.text = task.description.toString()
-        priority.text = task.priority.toString()
+        description.text = task.description.toString()
+        checkBox.isChecked = task.isChecked
+
     }
 }

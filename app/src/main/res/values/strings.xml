@@ -5,4 +5,6 @@
     <string name="addbtn">Add Task\n</string>
     <string name="TaskList">Task List</string>
     <string name="delete_button">delete</string>
+    <string name="App_Name">app_name</string>
+    <string name="slogan">slogan\n</string>
 </resources>

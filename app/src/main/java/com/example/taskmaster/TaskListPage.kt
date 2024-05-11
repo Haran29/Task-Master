@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,19 +36,21 @@ class TaskListPage : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[TaskPageDataViewModel::class.java]
 
         val recyclerView: RecyclerView = findViewById(R.id.rvList)
-        adapter = TaskAdapter(emptyList(), repository) // Initialize adapter with an empty list
+        adapter = TaskAdapter(emptyList(), repository) { task ->
+            displayEditDialog(task)
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Observe the LiveData from the ViewModel
+
         viewModel.data.observe(this) { tasks ->
             adapter.submitList(tasks)
         }
 
-        // Refresh data when activity starts
+
         refreshData()
 
-        val addButton: Button = findViewById(R.id.add_btn)
+        val addButton: ImageView = findViewById(R.id.add_btn)
         addButton.setOnClickListener {
             displayDialog(repository)
         }
@@ -57,6 +60,7 @@ class TaskListPage : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val data = repository.getAllTasks()
+
                 withContext(Dispatchers.Main) {
                     viewModel.setData(data)
                 }
@@ -78,7 +82,7 @@ class TaskListPage : AppCompatActivity() {
 
         val alertDialog = builder.create()
 
-        // Handle OK button click
+
         view.findViewById<Button>(R.id.okButton).setOnClickListener {
             val name = taskNameInput.text.toString()
             val description = taskDescriptionInput.text.toString()
@@ -101,7 +105,7 @@ class TaskListPage : AppCompatActivity() {
             }
         }
 
-        // Handle Close button click
+
         view.findViewById<Button>(R.id.closeButton).setOnClickListener {
             alertDialog.dismiss()
         }
@@ -109,5 +113,55 @@ class TaskListPage : AppCompatActivity() {
         alertDialog.show()
     }
 
+    private fun displayEditDialog(task: Task) {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.update_task, null)
+        builder.setView(view)
+
+        val taskNameInput = view.findViewById<EditText>(R.id.taskNameInput)
+        val taskDescriptionInput = view.findViewById<EditText>(R.id.taskDescriptionInput)
+        val taskPriorityInput = view.findViewById<EditText>(R.id.taskPriorityInput)
+
+
+        taskNameInput.setText(task.name)
+        taskDescriptionInput.setText(task.description)
+        taskPriorityInput.setText(task.priority.toString())
+
+        val alertDialog = builder.create()
+
+
+        view.findViewById<Button>(R.id.okButton).setOnClickListener {
+            val name = taskNameInput.text.toString()
+            val description = taskDescriptionInput.text.toString()
+            val priority = try {
+                taskPriorityInput.text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                e.printStackTrace()
+                null
+            }
+
+            if (name.isNotBlank() && priority != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        // Update the task
+                        task.name = name
+                        task.description = description
+                        task.priority = priority
+                        repository.updateTask(task)
+                        alertDialog.dismiss()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+
+
+        view.findViewById<Button>(R.id.closeButton).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+    }
 
 }

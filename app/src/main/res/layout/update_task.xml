@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@color/cardview_light_background">
+    android:background="@color/cardview_light_background"
+    >
 
     <TextView
         android:id="@+id/enterNewTaskText"
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:text="Enter New Task"
+        android:text="Update Task"
         android:textColor="#004AAC"
         android:textSize="24sp"
         android:textStyle="bold" />
