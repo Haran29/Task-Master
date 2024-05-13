@@ -3,16 +3,14 @@ package database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "tasks")
 data class Task(
-
-    val name: String?,
-    val description: String?,
-    val priority: Int?,
-    val deadline: Long?
-
-
-){
+    var name: String,
+    var description: String?,
+    var priority: Int,
+    var isChecked: Boolean = false
+)
+{
     @PrimaryKey(autoGenerate = true)
-    val id: Long?= null
+    var id :Int? = null
 }
